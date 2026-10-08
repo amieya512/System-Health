@@ -32,7 +32,52 @@ No extra modules are needed. It uses only cmdlets that ship with Windows.
 ## Example output
 
 ```
-[Paste a real run of your script here]
+PS C:\Users\YourName\system-health> .\system-health.ps1
+WINDOWS SYSTEM HEALTH REPORT
+----------------------------
+COMPUTER NAME: DESKTOP-EXAMPLE
+OS: Microsoft Windows 11 Home , 10.0.26200
+CPU USAGE: 39%
+MEMORY:
+        Used: 10.09 GB (51.09%)
+        Free: 9.66 GB (48.92%)
+-----------------------------------------------
+TOP 5 PROCESSES BY CPU
+
+Name           Id         CPU
+----           --         ---
+Discord     13908  7987.09375
+browserhost 23780   7080.0625
+Notion      16568  2819.78125
+Notion      22352 1517.515625
+chrome      33872 1353.671875
+
+
+-----------------------------------------------
+TOP 5 PROCESSES BY MEMORY
+
+Name                  Id Memory (MB)
+----                  -- -----------
+Memory Compression  2468       928.9
+chrome             31360       388.6
+Notion              3844       375.5
+Discord            13908       355.6
+MsMpEng             5004         337
+
+
+-----------------------------------------------
+IMPORTANT SERVICES
+
+DisplayName                         Status
+-----------                         ------
+DNS Client                         Running
+Windows Event Log                  Running
+Windows Management Instrumentation Running
+
+
+----------------------------------------------
+NETWORK STATUS
+PASS
 ```
 
 ## How it works
@@ -42,7 +87,7 @@ No extra modules are needed. It uses only cmdlets that ship with Windows.
 | Computer and OS | `Get-ComputerInfo` or `$env:COMPUTERNAME`
 | CPU usage | `Get-CimInstance Win32_Processor` | Reads `LoadPercentage`, a snapshot of recent load. |
 | Memory | `Get-CimInstance Win32_OperatingSystem` | Values come in kilobytes and are converted to GB. Used is total minus free. |
-| Disk | [Cmdlet you used] | Reports the C: drive only. |
+| Disk | Reports the C: drive only. |
 | Top processes | `Get-Process`, `Sort-Object`, `Select-Object` | Sorted by `CPU` and `WorkingSet64`, top 5 each. Memory is converted to MB with a calculated column. |
 | Services | `Get-Service` | Checks a short list of services that matter on most machines|
 | Network | `Test-Connection` | One-packet pings with `-Quiet`, printed as PASS or FAIL. |
